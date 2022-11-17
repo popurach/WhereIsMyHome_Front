@@ -12,9 +12,6 @@
         <v-list-item v-for="i in comments" :key="i.num">
             <v-list-item-title v-text="i.comment"></v-list-item-title>
             <v-btn v-if="i.writer===user">
-                수정
-            </v-btn>
-            <v-btn v-if="i.writer===user">
                 삭제
             </v-btn>
         </v-list-item>
