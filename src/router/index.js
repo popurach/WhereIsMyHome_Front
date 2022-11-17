@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import QnA from "@/components/qna/QnA";
 import Comment from "@/components/qna/QnAComment";
 import QnADetail from "@/components/qna/QnADetail";
+import QnAInput from "@/components/qna/QnAInput";
+import QnAUpdate from "@/components/qna/QnAUpdate";
 
 Vue.use(VueRouter);
 
@@ -37,6 +39,16 @@ const routes = [
         path: "/qnadetail",
         name: "QnADetail",
         component: QnADetail,
+    },
+    {
+        path: "/qnainput",
+        name: "QnAInput",
+        component: QnAInput,
+    },
+    {
+        path: "/qnaupdate",
+        name: "QnAUpdate",
+        component: QnAUpdate,
     },
 ];
 

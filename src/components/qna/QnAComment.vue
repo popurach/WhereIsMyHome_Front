@@ -11,7 +11,7 @@
     <v-list>
         <v-list-item v-for="i in comments" :key="i.num">
             <v-list-item-title v-text="i.comment"></v-list-item-title>
-            <v-btn v-if="i.writer===user">
+            <v-btn v-if="i.writer===user" @click="deleteComment(i.num)">
                 삭제
             </v-btn>
         </v-list-item>
@@ -41,9 +41,7 @@ export default {
         }
     },
     methods:{
-        // TODO: bnum props 받기
         insertComment(){
-            console.log(this.detail);
             http.post("/comment",{
                 bnum:this.detail.num,
                 writer:this.$store.state.userId,
@@ -53,12 +51,15 @@ export default {
                 this.$router.go();
             })
         },
-        // TODO: bnum, num props 받기
-        deleteComment(){
-            http.delete(`/comment/${this.detail.bnum}/${this.detail.num}`)
+        deleteComment(num){
+            let row=this.comments.filter((v)=>v.num===num);
+            http.delete(`/comment/${row[0].bnum}/${row[0].num}`)
             .then(()=>{
                 alert("댓글이 삭제되었습니다.");
                 this.$router.go();
+            })
+            .catch(()=>{
+                alert("댓글 삭제에 실패했습니다.");
             })
         }
     }

@@ -1,12 +1,12 @@
 <template >
-    <div class='d-layout' style="padding-bottom : 230px">
+    <div class='d-layout col-12' style="padding-bottom : 230px">
 		<h1 class='content-title'>QnA 게시판 상세보기</h1>
 
 		<div class="AddWrap">
 			<form>
 				<table class="tbAdd">
 					<colgroup>
-						<col width="40%" />
+						<col width="30%" />
 						<col width="*" />
 					</colgroup>
 					<tr>
@@ -28,16 +28,25 @@
 				</table>
 			</form>
 		</div>
-		<qn-a-comment></qn-a-comment>
-
-		<div class="btnWrap">
-			<a href="javascript:;" @click="fnList" class="btn">목록</a>
-		</div>	
+        <div style="margin-bottom:4%;" align="center">
+            <v-btn class="mr-4" @click="update">
+                수정
+            </v-btn>
+            <v-btn class="mr-4" @click="remove">
+                삭제
+            </v-btn>
+            <v-btn @click="fnList">
+                목록
+            </v-btn>
+        </div>
+		<qn-a-comment></qn-a-comment>	
+        
 	</div>
 </template>
 
 <script>
 import QnAComment from "./QnAComment.vue";
+import http from "@/api/http";
 
 export default {
     name:"QnADetail",
@@ -49,6 +58,19 @@ export default {
     methods: {
         fnList(){
             this.$router.push({path:'./QnA'});
+        },
+        update(){
+            this.$router.push({path:"./qnaupdate"});
+        },
+        remove(){
+            http.delete(`/qna/${this.detailqna.num}`)
+                .then(()=>{
+                    alert("글을 삭제했습니다!");
+                    this.$router.push({path:'./QnA'});
+                })
+                .catch(()=>{
+                    alert("글 삭제에 실패했습니다.");
+                })
         }
     },
 	components:{
@@ -62,7 +84,7 @@ export default {
     .tbAdd{border:1px solid #888; width : 100%; border-radius: 10px;}
 	.tbAdd th{border:1px solid rgba(0,0,0,0.1); padding:1rem 0; border-top : none;border-left: none }
 	.tbAdd td{border-bottom:1px solid rgba(0,0,0,0.1); padding:1rem 0; padding-left: 1rem;}
-	.tbAdd td.txt_cont{height:300px; vertical-align:top;}
+	.tbAdd td.txt_cont{height:200px; vertical-align:top;}
 
     .last_tr{
         border-bottom : none !important;

@@ -6,6 +6,7 @@
       :items-per-page="10"
       @click:row="detailQnA"
     ></v-data-table>
+    <v-btn style="margin-top:2%" class="float-right" @click="input">글 등록</v-btn>
   </div>
 </template>
 
@@ -58,7 +59,9 @@ export default {
       // this.$router.push({path:'/qnadetail'});
       this.$store.dispatch("detailQnA", {num: row.num, writer: row.writer, title: row.title, content: row.content, date: row.date})
           .then(res => this.$router.push({path:'/qnadetail'}))
-      
+    },
+    input(){
+      this.$router.push({name:"QnAInput"});
     }
     
   }
