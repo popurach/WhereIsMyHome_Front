@@ -65,7 +65,7 @@
             </v-toolbar-title>
           </v-col>
 
-          <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="3">
+          <v-col v-if="$vuetify.breakpoint.mdAndUp" cols="4">
             <v-btn
                 v-for="(item, i) in barItems"
                 :key="i"
@@ -79,7 +79,7 @@
             >
           </v-col>
 
-          <v-col v-if="userId!=''" cols="2">
+          <v-col v-if="userId!=''" cols="3">
             <v-btn
                 class="text-capitalize"
                 to="/comment"

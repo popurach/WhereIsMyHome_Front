@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="col-12">
     <QnASearch></QnASearch>
-    <hr>
+    <hr style="margin-bottom:2%">
     <QnAList></QnAList>
   </div>
 </template>
