@@ -1,0 +1,92 @@
+<template >
+    <div class='d-layout' style="padding-bottom : 230px">
+		<h1 class='content-title'>QnA 게시판 상세보기</h1>
+
+		<div class="AddWrap">
+			<form>
+				<table class="tbAdd">
+					<colgroup>
+						<col width="40%" />
+						<col width="*" />
+					</colgroup>
+					<tr>
+						<th>제목</th>
+						<td>{{detailqna.title}}</td>
+					</tr>
+                    <tr>
+                        <th>작성자</th>
+                        <td>{{detailqna.writer}}</td>
+                    </tr>
+                    <tr>
+                        <th>작성일자</th>
+                        <td>{{detailqna.date}}</td>
+                    </tr>
+					<tr >
+						<th class='last_tr'>내용</th>
+						<td class="txt_cont last_tr description">{{detailqna.content}}</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<qn-a-comment></qn-a-comment>
+
+		<div class="btnWrap">
+			<a href="javascript:;" @click="fnList" class="btn">목록</a>
+		</div>	
+	</div>
+</template>
+
+<script>
+import QnAComment from "./QnAComment.vue";
+
+export default {
+    name:"QnADetail",
+    data() {
+        return {
+            detailqna:this.$store.state.detailqna,
+        }
+    },
+    methods: {
+        fnList(){
+            this.$router.push({path:'./QnA'});
+        }
+    },
+	components:{
+		QnAComment
+	}
+}
+</script>
+
+<style>
+    .AddWrap{width: 100%; margin-bottom: 40px;}
+    .tbAdd{border:1px solid #888; width : 100%; border-radius: 10px;}
+	.tbAdd th{border:1px solid rgba(0,0,0,0.1); padding:1rem 0; border-top : none;border-left: none }
+	.tbAdd td{border-bottom:1px solid rgba(0,0,0,0.1); padding:1rem 0; padding-left: 1rem;}
+	.tbAdd td.txt_cont{height:300px; vertical-align:top;}
+
+    .last_tr{
+        border-bottom : none !important;
+    }
+	.btnWrap{text-align:center; margin:20px 0 0 0;}
+	.btnWrap a{margin:0 10px;}
+	.btnAdd {background:#43b984}
+	.btnDelete{background:#f00;}
+    .description{
+        overflow: scroll;
+        overflow-x: hidden;
+        letter-spacing: 0.5px;
+        line-height: 200%;
+    }
+    .content-title{
+        margin-bottom : 40px;
+        margin-top:30px;
+    }
+    .d-layout{
+        max-width: 1200px;
+    }
+    .container{
+        width: 100vw;
+        display: flex;
+        align-items: center;
+    }
+</style>
