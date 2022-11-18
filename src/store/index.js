@@ -20,6 +20,7 @@ const store = new Vuex.Store({
         house: null,
         qna: [],
         detailqna: {},
+        map: null
     },
     getters: {
         loginGetter(state) {
@@ -31,6 +32,9 @@ const store = new Vuex.Store({
         QnADetailGetter(state) {
             return state.detailqna;
         },
+        mapGetter(state) {
+            return state.map
+        }
     },
     actions: {
         loginAction: (store, payload) => {
@@ -121,6 +125,11 @@ const store = new Vuex.Store({
         detailQnA({ commit }, payload) {
             commit("QnADetail", { detail: payload });
         },
+        mapInitializeAction({ commit }, payload) {
+            
+            console.log('in action' , commit , payload)
+            commit("mapInitalize" , payload)
+        }
     },
     mutations: {
         loginMutation: (state, payload) => {
@@ -170,7 +179,7 @@ const store = new Vuex.Store({
         },
         SET_HOUSE_LIST(state, houses) {
             state.houses = houses;
-        },
+        }, 
         SET_DETAIL_HOUSE(state, house) {
             state.house = house;
         },
@@ -183,6 +192,11 @@ const store = new Vuex.Store({
         QnADetail: (state, payload) => {
             state.detailqna = payload.detail;
         },
+        initializeMap: (state, payload) => {
+
+            console.log('in mutation' , state , payload)
+            state.map = payload;
+        }
     },
     plugins: [
         createPersistedState({
