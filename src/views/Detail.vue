@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-row>
+    <v-row style="padding-bottom: 200px">
       <v-col cols="12" lg="12" xl="8"> 
         <div>
           <div>
@@ -54,6 +54,7 @@
                   :headers="headers"
                   :items="houses"
                   :items-per-page="10"
+                  @click:row="handleClick"
                   class="elevation-1"
                   style="width: 100%">
                     <thead>
@@ -66,14 +67,15 @@
                     </thead>
                 </v-data-table>
               </div>
-              
               <v-card-text>
                 <div>
                   <v-btn color="accent">관심지역 등록하기</v-btn>
                 </div>
-
               </v-card-text>
             </v-card>
+          </div>
+          <div v-if="selectedItems.length != 0">
+            <ka-kao-map :selectedItems = "selectedItems"></ka-kao-map>
           </div>
         </div>
       </v-col>
@@ -82,11 +84,13 @@
 </template>
 
 <script>
+import KaKaoMap from "@/components/house/KaKaoMap";
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "AptList",
   components: {
     siderbar: () => import("@/components/details/sidebar"),
+    KaKaoMap,
   },
   data() {
     return {
@@ -94,6 +98,7 @@ export default {
       gugunName: null,
       dongName: null,
       aptName: null,
+      selectedItems: [],
       headers: [
       {
         text: '아파트명',
@@ -122,7 +127,6 @@ export default {
       ...mapActions(["getSido", "getGugun", "getDong", "getApt", "getHouseList"]),
       ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST", "CLEAR_HOUSE_LIST"]),
       gugunList() {
-        // console.log(this.sidoCode);
         this.CLEAR_GUGUN_LIST();
         this.gugunName = null;
         console.log(this.sidoName);
@@ -143,6 +147,10 @@ export default {
         this.CLEAR_HOUSE_LIST();
         if (this.aptName) this.getHouseList({sidoName: this.sidoName, gugunName: this.gugunName, dongName: this.dongName, aptName: this.aptName});
       },
+      handleClick(item){
+        console.log(item);
+        this.selectedItems = item;
+      }
     },
 };
 </script>

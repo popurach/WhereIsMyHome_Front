@@ -6,6 +6,7 @@ import Comment from "@/components/qna/QnAComment";
 import QnADetail from "@/components/qna/QnADetail";
 import QnAInput from "@/components/qna/QnAInput";
 import QnAUpdate from "@/components/qna/QnAUpdate";
+import KaKaoMap from "@/components/house/KaKaoMap";
 
 Vue.use(VueRouter);
 
@@ -49,6 +50,11 @@ const routes = [
         path: "/qnaupdate",
         name: "QnAUpdate",
         component: QnAUpdate,
+    },
+    {
+        path: "/kakaomap",
+        name: "KaKaoMap",
+        component: KaKaoMap,
     },
 ];
 
