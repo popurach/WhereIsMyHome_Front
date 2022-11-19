@@ -20,7 +20,7 @@ const store = new Vuex.Store({
         house: null,
         qna: [],
         detailqna: {},
-        map: null
+        map : null
     },
     getters: {
         loginGetter(state) {
@@ -108,28 +108,25 @@ const store = new Vuex.Store({
                 });
         },
         getHouseList({ commit }, { sidoName, gugunName, dongName, aptName }) {
-            http.post("/getSearch", {
-                sidoName: sidoName,
-                gugunName: gugunName,
-                dongName: dongName,
-                aptName: aptName,
-            })
-                .then(({ data }) => {
-                    console.log(data);
-                    commit("SET_HOUSE_LIST", data);
+            if (sidoName && gugunName && dongName && aptName) {
+                http.post("/getSearch", {
+                    sidoName: sidoName,
+                    gugunName: gugunName,
+                    dongName: dongName,
+                    aptName: aptName,
                 })
-                .catch((error) => {
-                    console.log(error);
-                });
+                    .then(({ data }) => {
+                        console.log(data);
+                        commit("SET_HOUSE_LIST", data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
         },
         detailQnA({ commit }, payload) {
             commit("QnADetail", { detail: payload });
         },
-        mapInitializeAction({ commit }, payload) {
-            
-            console.log('in action' , commit , payload)
-            commit("mapInitalize" , payload)
-        }
     },
     mutations: {
         loginMutation: (state, payload) => {
@@ -156,6 +153,7 @@ const store = new Vuex.Store({
             });
         },
         SET_APT_LIST(state, apts) {
+            console.log(apts);
             apts.forEach((apt) => {
                 state.apts.push({ value: apt.aptName, text: apt.aptName });
             });
@@ -192,11 +190,6 @@ const store = new Vuex.Store({
         QnADetail: (state, payload) => {
             state.detailqna = payload.detail;
         },
-        initializeMap: (state, payload) => {
-
-            console.log('in mutation' , state , payload)
-            state.map = payload;
-        }
     },
     plugins: [
         createPersistedState({

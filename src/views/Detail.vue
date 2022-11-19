@@ -74,8 +74,11 @@
               </v-card-text>
             </v-card>
           </div>
-          <div v-if="selectedItems.length != 0">
+          <div v-if="selectedItems != null">
             <ka-kao-map :selectedItems = "selectedItems"></ka-kao-map>
+            <!-- <div v-if="this.$store.state.map != null" style='margin-leftt:10px'>
+              <ka-kao-road-view :selectedItems = "selectedItems"></ka-kao-road-view>
+            </div> -->
           </div>
         </div>
       </v-col>
@@ -85,12 +88,14 @@
 
 <script>
 import KaKaoMap from "@/components/house/KaKaoMap";
+import KaKaoRoadView from "@/components/house/KaKaoRoadView";
 import { mapState, mapActions, mapMutations } from "vuex";
 export default {
   name: "AptList",
   components: {
     siderbar: () => import("@/components/details/sidebar"),
     KaKaoMap,
+    KaKaoRoadView
   },
   data() {
     return {
@@ -98,7 +103,7 @@ export default {
       gugunName: null,
       dongName: null,
       aptName: null,
-      selectedItems: [],
+      selectedItems: null,
       headers: [
       {
         text: '아파트명',
