@@ -82,7 +82,7 @@
           <v-col v-if="userId!=''" cols="3">
             <v-btn
                 class="text-capitalize"
-                to="/comment"
+                to="/favoritelist"
                 exact
                 exact-active-class="accent--text"
                 text

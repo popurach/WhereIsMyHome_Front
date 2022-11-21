@@ -7,6 +7,7 @@ import QnADetail from "@/components/qna/QnADetail";
 import QnAInput from "@/components/qna/QnAInput";
 import QnAUpdate from "@/components/qna/QnAUpdate";
 import KaKaoMap from "@/components/house/KaKaoMap";
+import FavoriteList from "@/components/favorite/FavoriteList"
 
 Vue.use(VueRouter);
 
@@ -55,6 +56,11 @@ const routes = [
         path: "/kakaomap",
         name: "KaKaoMap",
         component: KaKaoMap,
+    },
+    {
+        path: "/favoritelist",
+        name: "FavoriteList",
+        component: FavoriteList,
     },
 ];
 
