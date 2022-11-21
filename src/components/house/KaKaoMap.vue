@@ -8,7 +8,7 @@
             <h1>아파트 로드뷰</h1>
             <div id="roadview" style="width:500px; height:470px;"></div>
         </div>
-        <!-- <button @click="displayMarker(markerPositions)">display마커</button> -->
+        <button @click="displayMarker(markerPositions)">display마커</button>
     </div>
 </template>
 
@@ -47,6 +47,7 @@ export default {
             this.map.setCenter( new kakao.maps.LatLng(...this.centerPos))
             
             //로드뷰
+            
             var roadview = new kakao.maps.Roadview(this.roadviewContainer); //로드뷰 객체
             var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
             var position = new kakao.maps.LatLng(...this.roadviewPosition);
@@ -67,7 +68,8 @@ export default {
             };
             this.map = new kakao.maps.Map(container, options);
             
-            //EventBus.$emit('mapload', map);
+            console.log(this.map);
+            // this.$store.state.map = this.map;
             var icon = new kakao.maps.MarkerImage(
                 '../../../images/marker.png',
                 new kakao.maps.Size(40, 50),
@@ -103,7 +105,7 @@ export default {
             const positions = markerPositions.map(
                 (position) => new kakao.maps.LatLng(...position)
             );
-
+            console.log('포지션임',positions);
             if (positions.length > 0) {
                 this.markers = positions.map(
                 (position) =>
