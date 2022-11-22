@@ -18,6 +18,7 @@
     "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
+    "material-design-icons-iconfont": "^6.7.0",
     "sass": "~1.32.12",
     "sass-loader": "^10",
     "unplugin-vue-components": "^0.17.15",
