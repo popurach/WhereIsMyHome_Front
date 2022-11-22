@@ -7,7 +7,8 @@ import QnADetail from "@/components/qna/QnADetail";
 import QnAInput from "@/components/qna/QnAInput";
 import QnAUpdate from "@/components/qna/QnAUpdate";
 import KaKaoMap from "@/components/house/KaKaoMap";
-import FavoriteList from "@/components/favorite/FavoriteList"
+import FavoriteList from "@/components/favorite/FavoriteList";
+import GoogleOauth from "@/components/user/GoogleOauth";
 
 Vue.use(VueRouter);
 
@@ -62,10 +63,16 @@ const routes = [
         name: "FavoriteList",
         component: FavoriteList,
     },
+    {
+        path: "/oauth/google",
+        name: "GoogleOauth",
+        component: GoogleOauth,
+    },
 ];
 
 const router = new VueRouter({
     routes,
+    mode: "history",
     scrollBehavior() {
         document.getElementById("app").scrollIntoView();
     },
