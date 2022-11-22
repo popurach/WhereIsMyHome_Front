@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import http from "../api/http";
 import createPersistedState from "vuex-persistedstate";
+import axios from "axios";
 
 //모든 컴포넌트에서 this.$store라는 값으로 store에 접근 가능
 Vue.use(Vuex);
@@ -20,7 +21,9 @@ const store = new Vuex.Store({
         house: null,
         qna: [],
         detailqna: {},
-        map: null
+        map: null,
+        IS_LOGIN: false,
+        IS_TOKEN_VALID: false,
     },
     getters: {
         loginGetter(state) {
@@ -33,12 +36,36 @@ const store = new Vuex.Store({
             return state.detailqna;
         },
         mapGetter(state) {
-            return state.map
-        }
+            return state.map;
+        },
     },
     actions: {
         loginAction: (store, payload) => {
-            store.commit("loginMutation", payload);
+            console.log("ASDFASFasdf", payload);
+            // accessToken, refreshToken 받기
+            http.post("http://localhost/login", payload)
+                .then(({ data }) => {
+                    if (data.message === "success") {
+                        let accessToken = data.accessToken;
+                        let refreshToken = data.refreshToken;
+
+                        store.commit("SET_IS_LOGIN", true);
+                        store.commit("SET_IS_TOKEN_VALID", true);
+
+                        sessionStorage.setItem("accessToken", accessToken);
+                        sessionStorage.setItem("refreshToken", refreshToken);
+                        store.commit("loginMutation", payload);
+                        alert("로그인 성공했습니다.");
+                        router.push("/");
+                    } else {
+                        store.commit("SET_IS_LOGIN", false);
+                        store.commit("SET_IS_TOKEN_VALID", false);
+                        // 로그인 정보가 정확하지 않음
+                        alert("id와 비밀번호를 다시 확인해주세요.");
+                        router.go();
+                    }
+                })
+                .catch((error) => console.log(error));
         },
         logoutAction: (store, payload) => {
             store.commit("logoutMutation");
@@ -126,10 +153,9 @@ const store = new Vuex.Store({
             commit("QnADetail", { detail: payload });
         },
         mapInitializeAction({ commit }, payload) {
-            
-            console.log('in action' , commit , payload)
-            commit("mapInitalize" , payload)
-        }
+            console.log("in action", commit, payload);
+            commit("mapInitalize", payload);
+        },
     },
     mutations: {
         loginMutation: (state, payload) => {
@@ -179,7 +205,7 @@ const store = new Vuex.Store({
         },
         SET_HOUSE_LIST(state, houses) {
             state.houses = houses;
-        }, 
+        },
         SET_DETAIL_HOUSE(state, house) {
             state.house = house;
         },
@@ -193,10 +219,15 @@ const store = new Vuex.Store({
             state.detailqna = payload.detail;
         },
         initializeMap: (state, payload) => {
-
-            console.log('in mutation' , state , payload)
+            console.log("in mutation", state, payload);
             state.map = payload;
-        }
+        },
+        SET_IS_LOGIN: (state, payload) => {
+            state.IS_LOGIN = payload;
+        },
+        SET_IS_TOKEN_VALID: (state, payload) => {
+            state.IS_TOKEN_VALID = payload;
+        },
     },
     plugins: [
         createPersistedState({
