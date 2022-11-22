@@ -8,7 +8,6 @@
             <h1>아파트 로드뷰</h1>
             <div id="roadview" style="width:500px; height:470px;"></div>
         </div>
-        <button @click="displayMarker(markerPositions)">display마커</button>
     </div>
 </template>
 
@@ -68,14 +67,12 @@ export default {
             };
             this.map = new kakao.maps.Map(container, options);
             
-            console.log(this.map);
             // this.$store.state.map = this.map;
             var icon = new kakao.maps.MarkerImage(
                 '../../../images/marker.png',
                 new kakao.maps.Size(40, 50),
 
             )
-            console.log('selectedItems', this.selectedItems)
             console.log('마커위치', this.markerPos)
             this.marker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(this.markerPos[0],this.markerPos[1]),
@@ -91,38 +88,8 @@ export default {
             var position = new kakao.maps.LatLng(this.selectedItems.lat, this.selectedItems.lng);
             // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
             this.roadviewClient.getNearestPanoId(position, 50, function(panoId) {
-                console.log('panoid', panoId)
                 roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
             });
-            
-
-        },
-        displayMarker(markerPositions) {
-            if (this.markers.length > 0) {
-                this.markers.forEach((marker) => marker.setMap(null));
-            }
-
-            const positions = markerPositions.map(
-                (position) => new kakao.maps.LatLng(...position)
-            );
-            console.log('포지션임',positions);
-            if (positions.length > 0) {
-                this.markers = positions.map(
-                (position) =>
-                    new kakao.maps.Marker({
-                    map: this.map,
-                    position,
-                    })
-                );
-
-                const bounds = positions.reduce(
-                    (bounds, latlng) => bounds.extend(latlng),
-                    new kakao.maps.LatLngBounds()
-                );
-                console.log(this.map);
-
-                this.map.setBounds(bounds);
-            }
         },
     },
     

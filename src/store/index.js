@@ -98,8 +98,6 @@ const store = new Vuex.Store({
                 });
         },
         getDong({ commit }, { sidoName, gugunName }) {
-            console.log(sidoName);
-            console.log(gugunName);
             http.post("/getDongList", {
                 sidoName: sidoName,
                 gugunName: gugunName,
@@ -123,15 +121,11 @@ const store = new Vuex.Store({
             });
         },
         async getApt({ commit }, { sidoName, gugunName, dongName }) {
-            console.log(sidoName);
-            console.log(gugunName);
-            console.log(dongName);
-            await http
-                .post("/getInfo", {
-                    sidoName: sidoName,
-                    gugunName: gugunName,
-                    dongName: dongName,
-                })
+            await http.post("/getInfo", {
+                sidoName: sidoName,
+                gugunName: gugunName,
+                dongName: dongName,
+            })
                 .then(({ data }) => {
                     console.log(data);
                     commit("SET_APT_LIST", data);
@@ -161,7 +155,6 @@ const store = new Vuex.Store({
             commit("QnADetail", { detail: payload });
         },
         getFavoriteList({ commit }, userId) {
-            console.log("action", userId);
             http.get("/favorite/" + userId)
                 .then(({ data }) => {
                     console.log(data);
@@ -204,12 +197,10 @@ const store = new Vuex.Store({
             });
         },
         async SET_APT_LIST(state, apts) {
-            console.log(apts);
             await apts.forEach((apt) => {
                 state.apts.push({ value: apt.aptName, text: apt.aptName });
             });
             state.houses = apts;
-            console.log("aaaaaa", state.houses);
         },
         CLEAR_SIDO_LIST(state) {
             state.sidos = [{ value: null, text: "선택하세요" }];
@@ -224,13 +215,11 @@ const store = new Vuex.Store({
             state.apts = [{ value: null, text: "선택하세요" }];
         },
         CLEAR_HOUSE_LIST(state) {
-            console.log("dsdsfa");
             state.houses = [];
             state.house = null;
         },
         CLEAR_FAVORITE_LIST(state) {
             state.favorites = [];
-            console.log("fav 초기화");
         },
         SET_HOUSE_LIST(state, houses) {
             state.houses = houses;

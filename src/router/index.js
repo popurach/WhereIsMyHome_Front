@@ -8,6 +8,10 @@ import QnAInput from "@/components/qna/QnAInput";
 import QnAUpdate from "@/components/qna/QnAUpdate";
 import KaKaoMap from "@/components/house/KaKaoMap";
 import FavoriteList from "@/components/favorite/FavoriteList";
+<<<<<<< HEAD
+import HouseDetail from "@/components/house/HouseDetail";
+=======
+>>>>>>> d127a9e8691e615f5da6cb4f000d2890c7997f7c
 import GoogleOauth from "@/components/user/GoogleOauth";
 
 Vue.use(VueRouter);
@@ -57,6 +61,11 @@ const routes = [
         path: "/kakaomap",
         name: "KaKaoMap",
         component: KaKaoMap,
+    },
+    {
+        path: "/housedetail",
+        name: "HouseDetail",
+        component: HouseDetail,
     },
     {
         path: "/favoritelist",
