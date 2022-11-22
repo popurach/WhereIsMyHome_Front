@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import http from "../api/http";
 import createPersistedState from "vuex-persistedstate";
 import axios from "axios";
+import router from "@/router/index";
 
 //모든 컴포넌트에서 this.$store라는 값으로 store에 접근 가능
 Vue.use(Vuex);
@@ -185,9 +186,15 @@ const store = new Vuex.Store({
             (state.userId = payload.id), (state.userPass = payload.pass);
         },
         logoutMutation: (state) => {
-            state.userId = "";
-            state.userPass = "";
-            this.$router.push("/");
+            http.get(`/logout/${state.userId}`).then(({ data }) => {
+                if (data.message === "success") {
+                    alert("로그아웃 되었습니다.");
+                    state.userId = "";
+                    state.userPass = "";
+                } else {
+                    alert("로그아웃 실패했습니다.");
+                }
+            });
         },
         SET_SIDO_LIST(state, sidos) {
             sidos.forEach((sido) => {
