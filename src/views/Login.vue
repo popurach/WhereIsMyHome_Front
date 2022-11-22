@@ -23,6 +23,9 @@
             <v-btn color="primary" @click="login">
               로그인
             </v-btn>
+            <v-btn color="primary" @click="google">
+              구글로그인
+            </v-btn>
           </div>
         </v-card-text>
       </v-card>
@@ -52,85 +55,18 @@ export default {
       let token=sessionStorage.getItem("accessToken");
 
       // TODO: 로그인된 정보인지 확인 -> 세션 만료됐다면 accessToken 재발급 -> 만료됐다면 refreshToken 재발급
+    },
+    google(){
+      const protocol = window.location.protocol;
+      const hostName = window.location.hostname;
+      const port = window.location.port;
+      let url =
+          protocol + "//" + hostName + (port ? ":" + port : "") + "/oauth/google";
+      window.location.href =
+          `https://accounts.google.com/o/oauth2/auth?client_id=${import.meta.env.VITE_GOOGLE_CLIENT_ID}&redirect_uri=` +
+          "http://localhost:8080/oauth/google"+
+          "&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile";
     }
   },
-  mounted(){
-    const script = document.createElement("script");
-    script.src = "https://apis.google.com/js/platform.js";
-    document.head.appendChild(script);
-    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-    script.onload = () => {
-      const gapi = window.gapi;
-      console.log(gapi);
-      const temp = gapi.load('auth2', () => {//auth2 모듈을 다운 받는다
-        console.log('11111111');
-        gapi.auth2.init({
-            client_id: clientId,
-            scope : 'https://www.googleapis.com/auth/userinfo.profile',
-            redirect_uri : 'http://localhost:8080/google'
-        }).then(()=>{
-          console.log(33333333);
-          const gAuthInstance = window.gapi.auth2.getAuthInstance();
-          console.log(111111);
-          const userInfo = gAuthInstance.signIn().catch(e => {
-              throw e;
-          })
-          console.log(222222);
-          const userProfile = userInfo.getBasicProfile();
-
-          const email = userProfile.getEmail();
-          const profileImg = userProfile.getImageUrl();
-          const name = userProfile.getName();
-
-          console.log(email, name);
-          gAuthInstance.signOut();
-        })
-      })
-    }
-    // this.initgapi();
-
-    
-    // const temp = gapi.load('auth2', () => {
-    //   gapi.auth2.init({
-    //       client_id: clientId,
-    //       scope : 'https://www.googleapis.com/auth/userinfo.profile'
-    //   })//.then(
-    //     async function onSuccess (res){
-    //       const gAuthInstance = gapi.auth2.getAuthInstance();
-    //       const userInfo = await gAuthInstance.signIn().catch(e => {
-    //           throw e;
-    //       })
-    //       const userProfile = userInfo.getBasicProfile();
-    //       const email = userProfile.getEmail();
-    //       const profileImg = userProfile.getImageUrl();
-    //       const name = userProfile.getName();
-    //       console.log(email, name);
-    //       gAuthInstance.signOut();
-    //     },
-    //     function onFailure(e){
-    //         console.log(e)
-    //         throw e
-    //     }
-    // )
-    // const authInstance
-    // })
-  },
-  async initgapi(){
-    const gAuthInstance = window.gapi.auth2.getAuthInstance();
-    console.log('33333');
-    const userInfo = await gAuthInstance.signIn().catch(e => {
-        throw e;
-    })
-
-    const userProfile = userInfo.getBasicProfile();
-
-    const email = userProfile.getEmail();
-    const profileImg = userProfile.getImageUrl();
-    const name = userProfile.getName();
-
-    console.log(email, name);
-    gAuthInstance.signOut();
-  }
 }
 </script>
