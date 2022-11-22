@@ -49,7 +49,6 @@ const store = new Vuex.Store({
     },
     actions: {
         loginAction: (store, payload) => {
-            console.log("ASDFASFasdf", payload);
             // accessToken, refreshToken 받기
             http.post("http://localhost/login", payload)
                 .then(({ data }) => {
