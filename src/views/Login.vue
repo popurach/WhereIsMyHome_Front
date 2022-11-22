@@ -54,6 +54,65 @@ export default {
         alert("로그인 실패~!~!!!");
       })
     }
+  },
+  mounted(){
+    // const script = document.createElement("script");
+    // script.src = "https://apis.google.com/js/platform.js";
+    // document.head.appendChild(script);
+    // const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+    // script.onload = () => {
+    //   const gapi = window.gapi;
+    //   console.log(gapi);
+    //   const temp = gapi.load('auth2', () => {//auth2 모듈을 다운 받는다
+    //     gapi.auth2.init({
+    //         client_id: clientId,
+    //         scope : 'https://www.googleapis.com/auth/userinfo.profile'
+    //     })
+    //   })
+    // }
+    // this.initgapi();
+
+    
+    // const temp = gapi.load('auth2', () => {
+    //   gapi.auth2.init({
+    //       client_id: clientId,
+    //       scope : 'https://www.googleapis.com/auth/userinfo.profile'
+    //   })//.then(
+    //     async function onSuccess (res){
+    //       const gAuthInstance = gapi.auth2.getAuthInstance();
+    //       const userInfo = await gAuthInstance.signIn().catch(e => {
+    //           throw e;
+    //       })
+    //       const userProfile = userInfo.getBasicProfile();
+    //       const email = userProfile.getEmail();
+    //       const profileImg = userProfile.getImageUrl();
+    //       const name = userProfile.getName();
+    //       console.log(email, name);
+    //       gAuthInstance.signOut();
+    //     },
+    //     function onFailure(e){
+    //         console.log(e)
+    //         throw e
+    //     }
+    // )
+    // const authInstance
+    // })
+  },
+  async initgapi(){
+    const gAuthInstance = gapi.auth2.getAuthInstance();
+    const userInfo = await gAuthInstance.signIn().catch(e => {
+        throw e;
+    })
+
+    const userProfile = userInfo.getBasicProfile();
+
+    const email = userProfile.getEmail();
+    const profileImg = userProfile.getImageUrl();
+    const name = userProfile.getName();
+
+    console.log(email, name);
+    gAuthInstance.signOut();
   }
 }
 </script>

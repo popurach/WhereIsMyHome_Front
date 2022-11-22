@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <v-data-table
-      :headers="headers"
-      :items="favlist"
-      :items-per-page="10"
-      @click:row="displayMarker"
-    ></v-data-table>
-    <v-btn style="margin-top:2%" class="float-right" @click="input">글 등록</v-btn>
-    <div v-if="markerPositions.length != 0">
-      <div id = "map" style="width:500px; height:470px;"></div>
+  <div style="padding-bottom: 200px">
+    <div>
+      <h2>dasdfasd</h2>
+    </div>
+    <div>
+      <v-data-table
+        :headers="headers"
+        :items="favlist"
+        :items-per-page="10"
+        @click:row="displayMarker"
+      >
+      </v-data-table>
+    </div>
+    <!-- <div v-if="this.markerPositions.length != 0"> -->
+    <div>
+      <div id = "map" style="width:100%; height:470px;"></div>
     </div>
   </div>
 </template>
@@ -29,10 +35,15 @@ export default {
   },
   data(){
     return{
+      sidoName: null,
+      gugunName: null,
+      dongName: null,
+
       userId:null,
       map : null,
       marker:{},
       markers: [],
+      // markerPositions:[],
       markerPositions:[],
       headers:[
         {
@@ -44,21 +55,27 @@ export default {
         {
           text:"시",
           value:"sidoName",
-          width:"50%",
+          width:"40%",
           align:"center"
         },
         {
           text:"군/구",
           value:"gugunName",
-          width:"10%",
+          width:"20%",
           align:"center"
         },
         {
           text:"동",
           value:"dongName",
-          width:"30%",
+          width:"20%",
           align:"center"
         },
+        {
+          text:"삭제",
+          value:"delete",
+          width:"10%",
+          align:"center"
+        }
       ],
     }
   },
@@ -77,31 +94,41 @@ export default {
     },
     displayMarker(row) {
       console.log(row);//시 군/구 동
-      
-      this.CLEAR_APT_LIST();
-      this.CLEAR_HOUSE_LIST();
-      
+      // this.CLEAR_APT_LIST();
+      // this.CLEAR_HOUSE_LIST();
+      this.sidoName = row.sidoName;
+      this.gugunName = row.gugunName;
+      this.dongName = row.dongName;
+
+      console.log(this.sidoName, this.gugunName, this.dongName);
+
       this.getApt({sidoName: row.sidoName, gugunName: row.gugunName, dongName: row.dongName});
       
       if(this.markerPositions.length != 0){
         this.markerPositions = [];
       }
-      
-      // console.log('333',this.$store.state)
-      let tmp = this.$store.state.houses;
-      console.log(tmp);
-      
-      console.log('출력')
+      // console.log(this.$store.state);
       console.log(this.$store.state.houses);
-      console.log('출력2')
-      const LatLng = this.$store.state.houses.value.map((item) => {
-          return {
+      const LatLng = this.$store.state.houses.map((item,idx) => {
+        return {
+          id: idx,
           lat : item.lat,
-          long : item.long
+          lng : item.lng
         }
       })
-      console.log(LatLng.length)
-      console.log(this.markerPositions.length)
+      const map = {};
+
+      //중복된 아파트 위도, 경도 처리
+      LatLng.forEach((latlng) => {
+        if(!map[latlng.lat + '+' + latlng.lng]){
+          map[latlng.lat + '+' + latlng.lng] = [latlng.lat , latlng.lng]
+        }
+      })
+    
+      for(const idx in map){
+        this.markerPositions.push(map[idx]);
+      }
+      
       var icon = new kakao.maps.MarkerImage(
           '../../../images/marker.png',
           new kakao.maps.Size(40, 50),
