@@ -69,13 +69,17 @@
               </div>
               <v-card-text>
                 <div>
-                  <v-btn color="accent">관심지역 등록하기</v-btn>
+                  <v-btn v-if="userId!='' && this.dongName != null" color="accent" 
+                  @click.prevent='registerFavorite'>관심지역 등록하기</v-btn>
                 </div>
               </v-card-text>
             </v-card>
           </div>
-          <div v-if="selectedItems.length != 0">
+          <div v-if="selectedItems != null">
             <ka-kao-map :selectedItems = "selectedItems"></ka-kao-map>
+            <!-- <div v-if="this.$store.state.map != null" style='margin-leftt:10px'>
+              <ka-kao-road-view :selectedItems = "selectedItems"></ka-kao-road-view>
+            </div> -->
           </div>
         </div>
       </v-col>
@@ -84,13 +88,16 @@
 </template>
 
 <script>
+import http from "@/api/http";
 import KaKaoMap from "@/components/house/KaKaoMap";
-import { mapState, mapActions, mapMutations } from "vuex";
+import KaKaoRoadView from "@/components/house/KaKaoRoadView";
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "AptList",
   components: {
     siderbar: () => import("@/components/details/sidebar"),
     KaKaoMap,
+    KaKaoRoadView
   },
   data() {
     return {
@@ -98,7 +105,7 @@ export default {
       gugunName: null,
       dongName: null,
       aptName: null,
-      selectedItems: [],
+      selectedItems: null,
       headers: [
       {
         text: '아파트명',
@@ -114,6 +121,7 @@ export default {
   },
   computed:{
     ...mapState(["sidos", "guguns", "dongs", "apts", "houses"]),
+    ...mapGetters({userId:"loginGetter"}),
   },
   created() {
     this.CLEAR_SIDO_LIST(); 
@@ -124,7 +132,7 @@ export default {
     this.getSido();
   },
   methods: {
-      ...mapActions(["getSido", "getGugun", "getDong", "getApt", "getHouseList"]),
+      ...mapActions(["getSido", "getGugun", "getDong", "getApt", "getHouseList", "registerFavorite"]),
       ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_DONG_LIST", "CLEAR_APT_LIST", "CLEAR_HOUSE_LIST"]),
       gugunList() {
         this.CLEAR_GUGUN_LIST();
@@ -146,10 +154,35 @@ export default {
       houseList() {
         this.CLEAR_HOUSE_LIST();
         if (this.aptName) this.getHouseList({sidoName: this.sidoName, gugunName: this.gugunName, dongName: this.dongName, aptName: this.aptName});
+        console.log(this.houses);
       },
       handleClick(item){
         console.log(item);
         this.selectedItems = item;
+      },
+      registerFavorite(){
+        console.log(this.userId);
+        console.log(this.sidoName);
+        console.log(this.gugunName);
+        console.log(this.dongName);
+        if(confirm('관심지역으로 등록하시겠습니까?')){
+          http.post("/favorite",{
+                  userId:this.userId,
+                  sidoName: this.sidoName, 
+                  gugunName: this.gugunName, 
+                  dongName: this.dongName
+              })
+                  .then(()=>{
+                      alert("관심지역을 등록했습니다!");
+                      // this.$router.push("/qna");
+                  })
+                  .catch(()=>{
+                      alert("관심지역 등록에 실패했습니다!");
+                      this.$router.go();
+                  })
+          }else{
+            return;
+          }
       }
     },
 };

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     state: {
         userId: "",
         userPass: "",
+        num: 999,
         sidos: [{ value: null, text: "선택하세요" }],
         guguns: [{ value: null, text: "선택하세요" }],
         dongs: [{ value: null, text: "선택하세요" }],
@@ -24,6 +25,7 @@ const store = new Vuex.Store({
         map: null,
         IS_LOGIN: false,
         IS_TOKEN_VALID: false,
+        favorites: [],
     },
     getters: {
         loginGetter(state) {
@@ -37,6 +39,12 @@ const store = new Vuex.Store({
         },
         mapGetter(state) {
             return state.map;
+        },
+        HousesGetter(state) {
+            return state.houses;
+        },
+        FavoriteListGetter(state) {
+            return state.favorites;
         },
     },
     actions: {
@@ -81,8 +89,6 @@ const store = new Vuex.Store({
                 });
         },
         getGugun({ commit }, sidoName) {
-            const params = { sidoName: sidoName };
-            console.log(params);
             http.get("/getGunguList/" + sidoName)
                 .then(({ data }) => {
                     console.log(data);
@@ -117,15 +123,16 @@ const store = new Vuex.Store({
                 store.commit("QnASearchMutation", { search: response.data });
             });
         },
-        getApt({ commit }, { sidoName, gugunName, dongName }) {
+        async getApt({ commit }, { sidoName, gugunName, dongName }) {
             console.log(sidoName);
             console.log(gugunName);
             console.log(dongName);
-            http.post("/getInfo", {
-                sidoName: sidoName,
-                gugunName: gugunName,
-                dongName: dongName,
-            })
+            await http
+                .post("/getInfo", {
+                    sidoName: sidoName,
+                    gugunName: gugunName,
+                    dongName: dongName,
+                })
                 .then(({ data }) => {
                     console.log(data);
                     commit("SET_APT_LIST", data);
@@ -135,15 +142,31 @@ const store = new Vuex.Store({
                 });
         },
         getHouseList({ commit }, { sidoName, gugunName, dongName, aptName }) {
-            http.post("/getSearch", {
-                sidoName: sidoName,
-                gugunName: gugunName,
-                dongName: dongName,
-                aptName: aptName,
-            })
+            if (sidoName && gugunName && dongName && aptName) {
+                http.post("/getSearch", {
+                    sidoName: sidoName,
+                    gugunName: gugunName,
+                    dongName: dongName,
+                    aptName: aptName,
+                })
+                    .then(({ data }) => {
+                        console.log(data);
+                        commit("SET_HOUSE_LIST", data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        },
+        detailQnA({ commit }, payload) {
+            commit("QnADetail", { detail: payload });
+        },
+        getFavoriteList({ commit }, userId) {
+            console.log("action", userId);
+            http.get("/favorite/" + userId)
                 .then(({ data }) => {
                     console.log(data);
-                    commit("SET_HOUSE_LIST", data);
+                    commit("SET_FAVORITE_LIST", data);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -181,11 +204,13 @@ const store = new Vuex.Store({
                 state.dongs.push({ value: dong, text: dong });
             });
         },
-        SET_APT_LIST(state, apts) {
-            apts.forEach((apt) => {
+        async SET_APT_LIST(state, apts) {
+            console.log(apts);
+            await apts.forEach((apt) => {
                 state.apts.push({ value: apt.aptName, text: apt.aptName });
             });
             state.houses = apts;
+            console.log("aaaaaa", state.houses);
         },
         CLEAR_SIDO_LIST(state) {
             state.sidos = [{ value: null, text: "선택하세요" }];
@@ -200,8 +225,13 @@ const store = new Vuex.Store({
             state.apts = [{ value: null, text: "선택하세요" }];
         },
         CLEAR_HOUSE_LIST(state) {
+            console.log("dsdsfa");
             state.houses = [];
             state.house = null;
+        },
+        CLEAR_FAVORITE_LIST(state) {
+            state.favorites = [];
+            console.log("fav 초기화");
         },
         SET_HOUSE_LIST(state, houses) {
             state.houses = houses;
@@ -227,6 +257,11 @@ const store = new Vuex.Store({
         },
         SET_IS_TOKEN_VALID: (state, payload) => {
             state.IS_TOKEN_VALID = payload;
+        },
+        SET_FAVORITE_LIST: (state, favorites) => {
+            favorites.forEach((favorite) => {
+                state.favorites.push(favorite);
+            });
         },
     },
     plugins: [
