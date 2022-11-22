@@ -1,10 +1,12 @@
 <template>
-  <v-app >
-    <AppBar></AppBar>
+  <v-app>
+    <div id="app">
+      <AppBar></AppBar>
 
-    <v-container class="mt-16 d-container" style='padding-bottom : 1rem'>
-      <router-view></router-view>
-    </v-container>
+      <v-container class="mt-16 d-container" style='padding-bottom : 1rem'>
+        <router-view></router-view>
+      </v-container>
+    </div>
 
     <Footer id="footer"></Footer>
   </v-app>
@@ -23,10 +25,13 @@ export default {
 </script>
 
 <style>
+#app{
+  height: auto;
+  min-height: 100%;
+}
 #footer{
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  position: relative;
+  transform: translateY(-100%);
 }
 .d-container{
   width: 100vw;

@@ -32,6 +32,7 @@
 
 <script>
 import axios from "axios";
+import { mapActions } from 'vuex';
 
 export default {
   name: "Login",
@@ -42,17 +43,15 @@ export default {
     }
   },
   methods:{
+    ...mapActions(["loginAction"]),
     login(){
-      axios.post("http://localhost/login",{
-        id:this.id,
-        pass:this.pass
-      }).then(()=>{
-        alert("로그인 성공");
-        this.$store.dispatch("loginAction",{id:this.id,pass:this.pass});
-        this.$router.push("/");
-      }).catch(()=>{
-        alert("로그인 실패~!~!!!");
-      })
+      // TODO: 로그인 정보 있는지 확인 후 accessToken, refreshToken 받아오기
+      this.loginAction({id:this.id,pass:this.pass});
+
+      // TODO: session에 저장된 토큰 값 가져오기
+      let token=sessionStorage.getItem("accessToken");
+
+      // TODO: 로그인된 정보인지 확인 -> 세션 만료됐다면 accessToken 재발급 -> 만료됐다면 refreshToken 재발급
     }
   },
   mounted(){
