@@ -76,6 +76,9 @@
             </v-card>
           </div>
           <div v-if="selectedItems != null">
+            <house-detail :selectedItems = "selectedItems"></house-detail>
+          </div>
+          <div v-if="selectedItems != null">
             <ka-kao-map :selectedItems = "selectedItems"></ka-kao-map>
             <!-- <div v-if="this.$store.state.map != null" style='margin-leftt:10px'>
               <ka-kao-road-view :selectedItems = "selectedItems"></ka-kao-road-view>
@@ -91,13 +94,15 @@
 import http from "@/api/http";
 import KaKaoMap from "@/components/house/KaKaoMap";
 import KaKaoRoadView from "@/components/house/KaKaoRoadView";
+import HouseDetail from "@/components/house/HouseDetail"
 import { mapState, mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "AptList",
   components: {
     siderbar: () => import("@/components/details/sidebar"),
     KaKaoMap,
-    KaKaoRoadView
+    KaKaoRoadView,
+    HouseDetail,
   },
   data() {
     return {
@@ -154,7 +159,6 @@ export default {
       houseList() {
         this.CLEAR_HOUSE_LIST();
         if (this.aptName) this.getHouseList({sidoName: this.sidoName, gugunName: this.gugunName, dongName: this.dongName, aptName: this.aptName});
-        console.log(this.houses);
       },
       handleClick(item){
         console.log(item);
