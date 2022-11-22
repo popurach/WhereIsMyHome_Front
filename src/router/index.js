@@ -9,6 +9,7 @@ import QnAUpdate from "@/components/qna/QnAUpdate";
 import KaKaoMap from "@/components/house/KaKaoMap";
 import FavoriteList from "@/components/favorite/FavoriteList";
 import HouseDetail from "@/components/house/HouseDetail";
+import GoogleOauth from "@/components/user/GoogleOauth";
 
 Vue.use(VueRouter);
 
@@ -67,6 +68,11 @@ const routes = [
         path: "/favoritelist",
         name: "FavoriteList",
         component: FavoriteList,
+    },
+    {
+        path: "/google",
+        name: "Google",
+        component: GoogleOauth,
     },
 ];
 

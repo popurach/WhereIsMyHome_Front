@@ -55,21 +55,39 @@ export default {
     }
   },
   mounted(){
-    // const script = document.createElement("script");
-    // script.src = "https://apis.google.com/js/platform.js";
-    // document.head.appendChild(script);
-    // const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const script = document.createElement("script");
+    script.src = "https://apis.google.com/js/platform.js";
+    document.head.appendChild(script);
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
-    // script.onload = () => {
-    //   const gapi = window.gapi;
-    //   console.log(gapi);
-    //   const temp = gapi.load('auth2', () => {//auth2 모듈을 다운 받는다
-    //     gapi.auth2.init({
-    //         client_id: clientId,
-    //         scope : 'https://www.googleapis.com/auth/userinfo.profile'
-    //     })
-    //   })
-    // }
+    script.onload = () => {
+      const gapi = window.gapi;
+      console.log(gapi);
+      const temp = gapi.load('auth2', () => {//auth2 모듈을 다운 받는다
+        console.log('11111111');
+        gapi.auth2.init({
+            client_id: clientId,
+            scope : 'https://www.googleapis.com/auth/userinfo.profile',
+            redirect_uri : 'http://localhost:8080/google'
+        }).then(()=>{
+          console.log(33333333);
+          const gAuthInstance = window.gapi.auth2.getAuthInstance();
+          console.log(111111);
+          const userInfo = gAuthInstance.signIn().catch(e => {
+              throw e;
+          })
+          console.log(222222);
+          const userProfile = userInfo.getBasicProfile();
+
+          const email = userProfile.getEmail();
+          const profileImg = userProfile.getImageUrl();
+          const name = userProfile.getName();
+
+          console.log(email, name);
+          gAuthInstance.signOut();
+        })
+      })
+    }
     // this.initgapi();
 
     
@@ -99,7 +117,8 @@ export default {
     // })
   },
   async initgapi(){
-    const gAuthInstance = gapi.auth2.getAuthInstance();
+    const gAuthInstance = window.gapi.auth2.getAuthInstance();
+    console.log('33333');
     const userInfo = await gAuthInstance.signIn().catch(e => {
         throw e;
     })
