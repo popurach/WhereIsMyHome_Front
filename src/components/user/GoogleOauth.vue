@@ -19,11 +19,15 @@ export default {
         try {
             http.post("/oauth/google", { accessToken })
                 .then(({data})=>{
+                    console.log(data);
                     if(data.message==="success"){
                         let access = data["access-token"];
                         let refresh = data["refresh-token"];
+                        console.log(2222222);
                         this.googleLoginAction({access,refresh});
+                        console.log(333333333);
                     }
+                    console.log(4444444);
                 }).catch((error)=>{
                     alert(error);
                 })

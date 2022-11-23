@@ -18,7 +18,7 @@
             </v-data-table>
 
             <v-card-actions v-if="favorites.length > 0">
-              <v-btn small color="error">
+              <v-btn small color="error" @click="deleteAll()">
                 Remove All
               </v-btn>
             </v-card-actions>
@@ -273,6 +273,22 @@ export default {
         return;
       }
     },
+    deleteAll(){
+      if(confirm('관심지역을 모두 삭제하시겠습니까?')){
+        http.delete(`/favorite`)
+          .then(()=>{
+              alert("삭제를 완료했습니다!");
+              // this.$router.push("/qna");
+              this.$router.go();
+          })
+          .catch(()=>{
+              alert("삭제를 실패했습니다!");
+              this.$router.go();
+          })
+      }else{
+        return;
+      }
+    }
   },
   mounted() {
     if(!window.kakao || !window.kakao.maps){
