@@ -49,6 +49,19 @@ const store = new Vuex.Store({
         },
     },
     actions: {
+        googleLoginAction: (store, payload) => {
+            store.commit("SET_IS_LOGIN", true);
+            store.commit("SET_IS_TOKEN_VALID", true);
+
+            sessionStorage.setItem("accessToken", payload.access);
+            sessionStorage.setItem("refreshToken", payload.refresh);
+
+            // TODO: google login id 보내주기
+            store.commit("getUserId", { accessToken: payload.access });
+
+            alert("로그인 성공했습니다.");
+            router.push("/");
+        },
         loginAction: (store, payload) => {
             // accessToken, refreshToken 받기
             http.post("http://localhost/login", payload)
@@ -80,11 +93,6 @@ const store = new Vuex.Store({
         },
         logoutAction: (store, payload) => {
             store.commit("logoutMutation");
-        },
-        // TODO: accessToken 재발급
-        getUserInfo(store, payload) {
-            let decodeToken = jwtDecode(payload.token);
-            console.log(decodeToken.id);
         },
         getSido({ commit }) {
             http.get(`/getSidolist`)
@@ -196,6 +204,10 @@ const store = new Vuex.Store({
         },
     },
     mutations: {
+        getUserId: (state, payload) => {
+            let decodeToken = jwtDecode(payload.accessToken);
+            state.userId = decodeToken.id;
+        },
         loginMutation: (state, payload) => {
             state.userId = payload.id;
             state.userPass = payload.pass;
@@ -225,6 +237,8 @@ const store = new Vuex.Store({
                         alert(
                             "accessToken 재발급에 실패했습니다. 다시 로그인해주십시오."
                         );
+                        store.commit("SET_IS_LOGIN", false);
+                        store.commit("SET_IS_TOKEN_VALID", false);
                         router.push("/login");
                     }
                 })
