@@ -36,7 +36,7 @@
               @keyup.enter="register"
           ></v-text-field>
           <div class="text-right">
-            <v-btn color="primary" @click="register">
+            <v-btn color="accent" @click="register">
               회원가입
             </v-btn>
             <v-btn color="primary" @click="cancel">
@@ -85,3 +85,9 @@ export default {
   },
 }
 </script>
+
+<style>
+button{
+  margin-left: 3%;
+}
+</style>

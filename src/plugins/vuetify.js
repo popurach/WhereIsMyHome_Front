@@ -13,8 +13,9 @@ export default new Vuetify({
             light: {
                 primary: "#000",
                 secondary: "#818383",
-                accent: "#2178ff",
-                footer: "#3788FF",
+                //accent: "#2178ff",
+                accent: "#D1A47D",
+                footer: "#D7B495",
             },
         },
     },

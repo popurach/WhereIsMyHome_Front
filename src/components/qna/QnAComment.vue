@@ -29,7 +29,6 @@ export default {
         //게시글에 따른 댓글 목록 뜨게
         http.get(`/comment/${this.detail.num}`)
             .then((response)=>{
-                console.log(response.data);
                 this.comments=response.data;
             });
     },

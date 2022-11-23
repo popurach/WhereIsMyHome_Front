@@ -1,3 +1,4 @@
+<script src="https://apis.google.com/js/platform.js" async defer></script>
 <template>
   <v-row class="d-flex justify-center align-center fill-height" style="min-height: 100vh">
     <v-col cols="12" md="6">
@@ -21,7 +22,7 @@
               @keyup.enter="login"
           ></v-text-field>
           <div class="text-right">
-            <v-btn color="primary" @click="login">
+            <v-btn color="accent" @click="login">
               로그인
             </v-btn>
             <v-btn color="primary" @click="google">
@@ -49,13 +50,7 @@ export default {
   methods:{
     ...mapActions(["loginAction","getUserInfo"]),
     login(){
-      // TODO: 로그인 정보 있는지 확인 후 accessToken, refreshToken 받아오기
       this.loginAction({id:this.id,pass:this.pass});
-
-      // TODO: session에 저장된 토큰 값 가져오기
-      let token=sessionStorage.getItem("accessToken");
-
-      // TODO: 로그인된 정보인지 확인 -> 세션 만료됐다면 accessToken 재발급 -> 만료됐다면 refreshToken 재발급
     },
     google(){
       const protocol = window.location.protocol;
@@ -71,3 +66,9 @@ export default {
   },
 }
 </script>
+
+<style>
+button{
+  margin-left: 3%;
+}
+</style>

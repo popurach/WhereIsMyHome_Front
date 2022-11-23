@@ -36,6 +36,15 @@ const store = new Vuex.Store({
         loginGetter(state) {
             return state.userId;
         },
+        UserInfoGetter(state) {
+            let info = {
+                userId: state.userId,
+                userName: state.userName,
+                userAddress: state.userAddress,
+                userTel: state.userTel,
+            };
+            return info;
+        },
         QnAListGetter(state) {
             return state.qna;
         },
@@ -252,6 +261,7 @@ const store = new Vuex.Store({
                     state.userId = "";
                     state.userPass = "";
                     state.IS_OAUTH = false;
+                    sessionStorage.clear();
                 } else {
                     alert("로그아웃 실패했습니다.");
                 }
@@ -277,7 +287,7 @@ const store = new Vuex.Store({
                     }
                 })
                 .catch((error) => {
-                    alert(error);
+                    console.log(error);
                 });
         },
         getUserInfoMutation(state, payload) {

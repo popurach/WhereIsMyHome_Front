@@ -10,26 +10,30 @@
         <v-card-text>
           <v-text-field
               label="id"
-              v-model="id"
+              v-model="userInfo.userId"
               outlined
+              readonly
           ></v-text-field>
           <v-text-field
               label="Name"
-              v-model="name"
+              v-model="userInfo.userName"
               outlined
+              readonly
           ></v-text-field>
           <v-text-field
               label="주소"
-              v-model="address"
+              v-model="userInfo.userAddress"
               outlined
+              readonly
           ></v-text-field>
           <v-text-field
               label="전화번호"
-              v-model="tel"
+              v-model="userInfo.userTel"
               outlined
+              readonly
           ></v-text-field>
           <div class="text-right">
-            <v-btn color="primary" @click="update">
+            <v-btn color="accent" @click="update">
               수정
             </v-btn>
             <v-btn color="primary" @click="cancel">
@@ -43,21 +47,19 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions,mapGetters } from 'vuex';
 
 export default {
   name: "MyPage",
-  data(){
-    return{
-      id:this.$store.state.userId,
-      name:this.$store.state.userName,
-      address:this.$store.state.userAddress,
-      tel:this.$store.state.userTel
-    }
-  },
   created(){
     this.getUserInfoAction(this.id);
   },
+  data(){
+    return{
+      id:this.$store.state.userId
+    }
+  },
+  computed:{...mapGetters({userInfo:"UserInfoGetter"})},
   methods:{
     ...mapActions(["getUserInfoAction"]),
     update(){
@@ -69,3 +71,9 @@ export default {
   },
 }
 </script>
+
+<style>
+button{
+  margin-left: 3%;
+}
+</style>
