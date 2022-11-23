@@ -1,22 +1,23 @@
 <template>
-  <div>
-    <v-row>
-        <v-col md="11">
-            <v-text-field placeholder="댓글을 등록하세요" filled rounded dense v-model.trim="text"></v-text-field>
-        </v-col>
-        <v-col md="1">
-            <v-btn rounded color="primary" @click="insertComment(text)">댓글 등록</v-btn>
-        </v-col>
-    </v-row>
-    <v-list>
-        <v-list-item v-for="i in comments" :key="i.num">
-            <v-list-item-title v-text="i.comment"></v-list-item-title>
-            <v-btn v-if="i.writer===user" @click="deleteComment(i.num)">
-                삭제
-            </v-btn>
-        </v-list-item>
-    </v-list>
-  </div>
+    <div>
+        <v-row>
+            <v-col md="11">
+                <v-text-field placeholder="댓글을 등록하세요" filled rounded dense v-model.trim="text"></v-text-field>
+            </v-col>
+            <v-col md="1">
+                <v-btn rounded color="primary" @click="insertComment(text)">댓글 등록</v-btn>
+            </v-col>
+        </v-row>
+        <v-list>
+            <v-list-item v-for="i in comments" :key="i.num">
+                <v-list-item-title v-text="i.comment"></v-list-item-title>
+                <v-list-item-title v-text="i.writer" class='text-right'></v-list-item-title>
+                <v-icon small v-if="i.writer===user" @click="deleteComment(i.num)">
+                    mdi-delete
+                </v-icon>
+            </v-list-item>
+        </v-list>
+    </div>
 </template>
 
 <script>
