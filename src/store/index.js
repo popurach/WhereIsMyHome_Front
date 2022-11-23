@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import http from "../api/http";
 import createPersistedState from "vuex-persistedstate";
-import axios from "axios";
+import jwtDecode from "jwt-decode";
 import router from "@/router/index";
 
 //모든 컴포넌트에서 this.$store라는 값으로 store에 접근 가능
@@ -50,19 +50,19 @@ const store = new Vuex.Store({
     },
     actions: {
         loginAction: (store, payload) => {
-            console.log("ASDFASFasdf", payload);
             // accessToken, refreshToken 받기
             http.post("http://localhost/login", payload)
                 .then(({ data }) => {
                     if (data.message === "success") {
-                        let accessToken = data.accessToken;
-                        let refreshToken = data.refreshToken;
+                        let accessToken = data["access-token"];
+                        let refreshToken = data["refresh-token"];
 
                         store.commit("SET_IS_LOGIN", true);
                         store.commit("SET_IS_TOKEN_VALID", true);
 
                         sessionStorage.setItem("accessToken", accessToken);
                         sessionStorage.setItem("refreshToken", refreshToken);
+
                         store.commit("loginMutation", payload);
                         alert("로그인 성공했습니다.");
                         router.push("/");
@@ -78,6 +78,11 @@ const store = new Vuex.Store({
         },
         logoutAction: (store, payload) => {
             store.commit("logoutMutation");
+        },
+        // TODO: accessToken 재발급
+        getUserInfo(store, payload) {
+            let decodeToken = jwtDecode(payload.token);
+            console.log(decodeToken.id);
         },
         getSido({ commit }) {
             http.get(`/getSidolist`)
@@ -114,13 +119,32 @@ const store = new Vuex.Store({
                     console.log(error);
                 });
         },
-        QnAListAction() {
-            http.get("/qna").then((response) => {
-                store.commit("QnAListMutation", { qna: response.data });
-            });
+        QnAListAction(store) {
+            http.get("/qna")
+                .then((response) => {
+                    console.log(this.state.userId);
+                    store.commit("QnAListMutation", { qna: response.data });
+                })
+                .catch((error) => {
+                    // TODO: accessToken이 만료되었는지 로그인이 필요한지 확인
+                    if (error.response.status === 500) {
+                        if (this.state.userId === "") {
+                            // 로그인 해야함!
+                            alert("로그인이 필요한 페이지입니다.");
+                            router.push("/");
+                        } else {
+                            //accessToken 만료
+                            store.commit("GenerateAccessToken");
+                        }
+                    }
+                });
         },
         QnASearchAction: (store, payload) => {
-            http.get(`/qna/search/${payload}`).then((response) => {
+            http.get(`/qna/search/${payload}`, {
+                headers: {
+                    Authorization: sessionStorage.getItem("accessToken"),
+                },
+            }).then((response) => {
                 store.commit("QnASearchMutation", { search: response.data });
             });
         },
@@ -159,9 +183,6 @@ const store = new Vuex.Store({
                     });
             }
         },
-        detailQnA({ commit }, payload) {
-            commit("QnADetail", { detail: payload });
-        },
         getFavoriteList({ commit }, userId) {
             console.log("action", userId);
             http.get("/favorite/" + userId)
@@ -183,7 +204,8 @@ const store = new Vuex.Store({
     },
     mutations: {
         loginMutation: (state, payload) => {
-            (state.userId = payload.id), (state.userPass = payload.pass);
+            state.userId = payload.id;
+            state.userPass = payload.pass;
         },
         logoutMutation: (state) => {
             http.get(`/logout/${state.userId}`).then(({ data }) => {
@@ -195,6 +217,26 @@ const store = new Vuex.Store({
                     alert("로그아웃 실패했습니다.");
                 }
             });
+        },
+        GenerateAccessToken: (state, payload) => {
+            // refresh Token 확인하여 accessToken 재발급
+            http.get(`/retoken/${state.userId}`)
+                .then(({ data }) => {
+                    if (data.message === "success") {
+                        sessionStorage.setItem(
+                            "accessToken",
+                            data["access-token"]
+                        );
+                    } else {
+                        alert(
+                            "accessToken 재발급에 실패했습니다. 다시 로그인해주십시오."
+                        );
+                        router.push("/login");
+                    }
+                })
+                .catch((error) => {
+                    alert(error);
+                });
         },
         SET_SIDO_LIST(state, sidos) {
             sidos.forEach((sido) => {

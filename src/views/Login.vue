@@ -46,13 +46,14 @@ export default {
     }
   },
   methods:{
-    ...mapActions(["loginAction"]),
+    ...mapActions(["loginAction","getUserInfo"]),
     login(){
       // TODO: 로그인 정보 있는지 확인 후 accessToken, refreshToken 받아오기
       this.loginAction({id:this.id,pass:this.pass});
 
       // TODO: session에 저장된 토큰 값 가져오기
       let token=sessionStorage.getItem("accessToken");
+      this.getUserInfo({token});
 
       // TODO: 로그인된 정보인지 확인 -> 세션 만료됐다면 accessToken 재발급 -> 만료됐다면 refreshToken 재발급
     },

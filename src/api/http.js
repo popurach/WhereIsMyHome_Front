@@ -3,10 +3,10 @@ import axios from "axios";
 // axios 객체 생성
 
 const AxiosInstance = axios.create({
-  baseURL: "http://localhost",
-  headers: {
-    "Content-Type": "application/json;charset=utf-8",
-  },
+    baseURL: "http://localhost",
+    headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+    },
 });
-
-export default AxiosInstance
+export default AxiosInstance;
