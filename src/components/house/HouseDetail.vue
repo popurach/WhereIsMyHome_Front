@@ -19,11 +19,11 @@
             </tr>
             <tr>
                 <th>층</th>
-                <td>{{selectedItems.floor}}</td>
+                <td>{{selectedItems.floor}}층</td>
             </tr>
             <tr >
                 <th>전용 면적</th>
-                <td>{{selectedItems.area}}</td>
+                <td>{{selectedItems.area}}㎡</td>
             </tr>
         </table>
     </div>

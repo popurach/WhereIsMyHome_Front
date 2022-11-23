@@ -16,18 +16,15 @@ export default {
     name: "KaKaoMap",
     data() {
         return {
-            markerPositions:[
-                [33.450705, 126.570677], 
-                [33.450936, 126.569477]
-            ],
             marker:{},
             markers: [],
             markerPos : [this.selectedItems.lat, this.selectedItems.lng],
             centerPos : [this.selectedItems.lat, this.selectedItems.lng],
+            mapCustomOverlay: null,
             tmp  : false,
             map : null,
             icon : null,
-
+            aptSearch : this.selectedItems.dongName + ' ' + this.selectedItems.aptName,
             //로드 뷰 데이터
             roadviewPosition : [this.selectedItems.lat, this.selectedItems.lng],
         }
@@ -44,6 +41,35 @@ export default {
         
             this.marker.setPosition(new kakao.maps.LatLng(...this.markerPos))
             this.map.setCenter( new kakao.maps.LatLng(...this.centerPos))
+
+            this.aptSearch = this.selectedItems.dongName + ' ' + this.selectedItems.aptName;
+
+            //커스텀 오버레이
+            this.mapCustomOverlay.setMap(null);
+            console.log('커스텀 오버레이 설정');
+            console.log(this.selectedItems);
+
+            var content = '<div class="overlay_info">';
+            content += `    <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=${this.aptSearch}" target="_blank"><strong> ${this.selectedItems.aptName} </strong></a>`;
+            content += '    <div class="desc">';
+            content += '        <img src="../../../images/apt_test.jpg" alt="">';
+            content += '        <div class="innerdesc">';
+            content += `            <span class="address">${this.selectedItems.area}㎡</span><br>`;
+            content += `            <span class="address">${this.selectedItems.dealAmount}만원</span><br>`;
+            content += `            <span class="address">${this.selectedItems.floor}층</span>`;
+            content += '        </div>';
+            content += '    </div>';
+            content += '</div>';
+
+            var custom_position = new kakao.maps.LatLng(this.selectedItems.lat,this.selectedItems.lng);
+            
+            this.mapCustomOverlay = new kakao.maps.CustomOverlay({
+                position: custom_position,
+                content: content,
+                // xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 1.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+            });
+            this.mapCustomOverlay.setMap(this.map);
             
             //로드뷰
             
@@ -73,13 +99,37 @@ export default {
                 new kakao.maps.Size(40, 50),
 
             )
-            console.log('마커위치', this.markerPos)
+            
             this.marker = new kakao.maps.Marker({
                 position: new kakao.maps.LatLng(this.markerPos[0],this.markerPos[1]),
                 image: icon,
             });
             this.marker.setMap(this.map);
 
+            //커스텀 오버레이
+            var content = '<div class="overlay_info">';
+            content += `    <a href="https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=${this.aptSearch}" target="_blank"><strong> ${this.selectedItems.aptName} </strong></a>`;
+            content += '    <div class="desc">';
+            content += '        <img src="../../../images/apt_test.jpg" alt="">';
+            content += '        <div class="innerdesc">';
+            content += `            <span class="address">${this.selectedItems.area}㎡</span><br>`;
+            content += `            <span class="address">${this.selectedItems.dealAmount}만원</span><br>`;
+            content += `            <span class="address">${this.selectedItems.floor}층</span>`;
+            content += '        </div>';
+            content += '    </div>';
+            content += '</div>';
+
+            var custom_position = new kakao.maps.LatLng(this.markerPos[0],this.markerPos[1]);
+            
+            this. mapCustomOverlay = new kakao.maps.CustomOverlay({
+                position: custom_position,
+                content: content,
+                // xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
+                yAnchor: 1.5 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
+            });
+            this.mapCustomOverlay.setMap(this.map);
+
+    
             //로드 뷰 생성
             this.roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
             var roadview = new kakao.maps.Roadview(this.roadviewContainer); //로드뷰 객체
@@ -110,6 +160,42 @@ export default {
 </script>
 
 <style>
+.overlay_info{
+    /* white-space: pre-wrap; */
+    position: relative;
+    display: inline-block;
+    min-width: 200px;
+    min-height: 50px;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: darksalmon;
+    width: auto;
+}
+.overlay_info:after{
+    content: '';
+    position: absolute;
+    display:flex;
+    left: 50%;
+    bottom: -20px;  /** 아래 top의 두께와 같다 **/
+    border-top: 20px solid red;
+    border-right: 20px solid transparent;
+}
+.desc{
+    word-break: break-all;
+    display:flex; 
+    align-items:center;
+    width:100%
+}
+.innerdesc{
+    padding-left: 10px;
+    width:100%;
+}
+.overlay_info img{
+    position: relative;
+    display:block;
+    height:100%;
+    width:50%;
+}
 #map {
     width: 400px;
     height: 400px;        
