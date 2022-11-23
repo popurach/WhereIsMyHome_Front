@@ -27,8 +27,6 @@ export default {
                 }).catch((error)=>{
                     alert(error);
                 })
-            //const jwtToken = data.token;
-            //this.googleLogtinAction(jwtToken);
         } catch (e) {
             console.log("OAuth 에러", e);
         }

@@ -18,7 +18,7 @@
               v-model="pass"
               type="password"
               outlined
-              @keyup:enter="login"
+              @keyup.enter="login"
           ></v-text-field>
           <div class="text-right">
             <v-btn color="primary" @click="login">

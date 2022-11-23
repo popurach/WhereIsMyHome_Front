@@ -14,6 +14,9 @@ const store = new Vuex.Store({
     state: {
         userId: "",
         userPass: "",
+        userName: "",
+        userAddress: "",
+        userTel: "",
         num: 999,
         sidos: [{ value: null, text: "선택하세요" }],
         guguns: [{ value: null, text: "선택하세요" }],
@@ -27,6 +30,7 @@ const store = new Vuex.Store({
         IS_LOGIN: false,
         IS_TOKEN_VALID: false,
         favorites: [],
+        IS_OAUTH: false,
     },
     getters: {
         loginGetter(state) {
@@ -52,6 +56,7 @@ const store = new Vuex.Store({
         googleLoginAction: (store, payload) => {
             store.commit("SET_IS_LOGIN", true);
             store.commit("SET_IS_TOKEN_VALID", true);
+            store.commit("SET_IS_OAUTH", true);
 
             sessionStorage.setItem("accessToken", payload.access);
             sessionStorage.setItem("refreshToken", payload.refresh);
@@ -93,6 +98,34 @@ const store = new Vuex.Store({
         },
         logoutAction: (store, payload) => {
             store.commit("logoutMutation");
+        },
+        checkPass(store, payload) {
+            http.post("/login", {
+                id: this.state.userId,
+                pass: payload,
+            }).then(({ data }) => {
+                if (data.message === "success") {
+                    // 비밀번호 확인 완료
+                    alert("비밀번호 확인!");
+                    router.push("/mypage");
+                } else {
+                    // 비밀번호 다름
+                    alert("비밀번호가 다릅니다.");
+                }
+            });
+        },
+        getUserInfoAction(store, payload) {
+            http.get(`/user/${payload}`)
+                .then(({ data }) => {
+                    store.commit("getUserInfoMutation", {
+                        name: data.name,
+                        address: data.address,
+                        tel: data.tel,
+                    });
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
         getSido({ commit }) {
             http.get(`/getSidolist`)
@@ -218,6 +251,7 @@ const store = new Vuex.Store({
                     alert("로그아웃 되었습니다.");
                     state.userId = "";
                     state.userPass = "";
+                    state.IS_OAUTH = false;
                 } else {
                     alert("로그아웃 실패했습니다.");
                 }
@@ -245,6 +279,11 @@ const store = new Vuex.Store({
                 .catch((error) => {
                     alert(error);
                 });
+        },
+        getUserInfoMutation(state, payload) {
+            state.userName = payload.name;
+            state.userAddress = payload.address;
+            state.userTel = payload.tel;
         },
         SET_SIDO_LIST(state, sidos) {
             sidos.forEach((sido) => {
@@ -310,6 +349,9 @@ const store = new Vuex.Store({
         },
         SET_IS_TOKEN_VALID: (state, payload) => {
             state.IS_TOKEN_VALID = payload;
+        },
+        SET_IS_OAUTH: (state, payload) => {
+            state.IS_OAUTH = payload;
         },
         SET_FAVORITE_LIST: (state, favorites) => {
             favorites.forEach((favorite) => {

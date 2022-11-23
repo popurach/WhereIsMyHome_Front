@@ -35,9 +35,29 @@ const routes = [
         component: Comment,
     },
     {
+        path: "/check",
+        name: "CheckPage",
+        component: () => import("@/views/CheckPage.vue"),
+    },
+    {
         path: "/login",
         name: "Login",
         component: () => import("@/views/Login.vue"),
+    },
+    {
+        path: "/register",
+        name: "Register",
+        component: () => import("@/views/Register.vue"),
+    },
+    {
+        path: "/mypage",
+        name: "Mypage",
+        component: () => import("@/components/user/Mypage.vue"),
+    },
+    {
+        path: "/update",
+        name: "Update",
+        component: () => import("@/views/Update.vue"),
     },
     {
         path: "/qnadetail",

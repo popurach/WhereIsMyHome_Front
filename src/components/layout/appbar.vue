@@ -53,15 +53,18 @@
             <v-app-bar-nav-icon
                 v-if="!$vuetify.breakpoint.mdAndUp"
                 @click.stop="drawer = !drawer"
-            />
+            >
+            </v-app-bar-nav-icon>
             <v-toolbar-title
                 class="font-weight-bold text-h5 primary--text"
                 style="cursor: pointer"
-                @click="$router.push('/')"
+                @click="home"
             >
-              <v-icon color="primary" large>mdi-feather</v-icon>
+              <v-btn icon disabled>
+                <v-img src="../../images/taebong.png" max-height="30" max-width="30"/>
+              </v-btn>
               구해줘
-              <span class="accent--text">홈즈</span>
+              <span class="accent--text">태봉</span>
             </v-toolbar-title>
           </v-col>
 
@@ -79,7 +82,7 @@
             >
           </v-col>
 
-          <v-col v-if="userId!=''" cols="3">
+          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===false" cols="5">
             <v-btn
                 class="text-capitalize"
                 to="/favoritelist"
@@ -87,8 +90,15 @@
                 exact-active-class="accent--text"
                 text
             >관심지역
-            </v-btn
-            >
+            </v-btn>
+            <v-btn
+                class="text-capitalize"
+                to="/check"
+                exact
+                exact-active-class="accent--text"
+                text
+            >마이페이지
+            </v-btn>
             <v-btn
                 class="text-capitalize"
                 @click="logout"
@@ -96,10 +106,27 @@
                 exact-active-class="accent--text"
                 text
             >로그아웃
-            </v-btn
-            >
+            </v-btn>
           </v-col>
-          <v-col v-if="userId===''" cols="2">
+          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===true" cols="3">
+            <v-btn
+                class="text-capitalize"
+                to="/favoritelist"
+                exact
+                exact-active-class="accent--text"
+                text
+            >관심지역
+            </v-btn>
+            <v-btn
+                class="text-capitalize"
+                @click="logout"
+                exact
+                exact-active-class="accent--text"
+                text
+            >로그아웃
+            </v-btn>
+          </v-col>
+          <v-col v-if="userId===''" cols="3">
             <v-btn
                 class="text-capitalize"
                 to="/login"
@@ -107,8 +134,15 @@
                 exact-active-class="accent--text"
                 text
             >로그인
-            </v-btn
-            >
+            </v-btn>
+            <v-btn
+                class="text-capitalize"
+                to="/register"
+                exact
+                exact-active-class="accent--text"
+                text
+            >회원가입
+            </v-btn>
           </v-col>
 
           <!-- <v-col v-if="$vuetify.breakpoint.mdAndUp" class="text-right">
@@ -151,6 +185,9 @@ export default {
   }),
   computed:{...mapGetters({userId:"loginGetter"})},
   methods:{
+    home(){
+      this.$router.push("/");
+    },
     logout(){
       this.$store.dispatch("logoutAction");
     }
