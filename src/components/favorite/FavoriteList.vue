@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-bottom: 200px">
+  <div style="padding-bottom: 200px; width: 100%">
     <div>
       <v-row align="center" class="list px-3 mx-auto">
         <v-col cols="12" sm="12">
