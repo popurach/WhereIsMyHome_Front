@@ -64,6 +64,8 @@ const store = new Vuex.Store({
                         sessionStorage.setItem("refreshToken", refreshToken);
 
                         store.commit("loginMutation", payload);
+
+                        console.log(accessToken);
                         alert("로그인 성공했습니다.");
                         router.push("/");
                     } else {
@@ -120,7 +122,6 @@ const store = new Vuex.Store({
         QnAListAction(store) {
             http.get("/qna")
                 .then((response) => {
-                    console.log(this.state.userId);
                     store.commit("QnAListMutation", { qna: response.data });
                 })
                 .catch((error) => {
@@ -130,11 +131,9 @@ const store = new Vuex.Store({
                             // 로그인 해야함!
                             alert("로그인이 필요한 페이지입니다.");
                             router.push("/");
-                        } else {
-                            //accessToken 만료
-                            store.commit("GenerateAccessToken");
                         }
                     }
+                    store.commit("GenerateAccessToken");
                 });
         },
         QnASearchAction: (store, payload) => {
@@ -147,11 +146,12 @@ const store = new Vuex.Store({
             });
         },
         async getApt({ commit }, { sidoName, gugunName, dongName }) {
-            await http.post("/getInfo", {
-                sidoName: sidoName,
-                gugunName: gugunName,
-                dongName: dongName,
-            })
+            await http
+                .post("/getInfo", {
+                    sidoName: sidoName,
+                    gugunName: gugunName,
+                    dongName: dongName,
+                })
                 .then(({ data }) => {
                     console.log(data);
                     commit("SET_APT_LIST", data);
@@ -220,6 +220,7 @@ const store = new Vuex.Store({
                             "accessToken",
                             data["access-token"]
                         );
+                        router.go();
                     } else {
                         alert(
                             "accessToken 재발급에 실패했습니다. 다시 로그인해주십시오."

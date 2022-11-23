@@ -6,7 +6,7 @@ const AxiosInstance = axios.create({
     baseURL: "http://localhost",
     headers: {
         "Content-Type": "application/json;charset=utf-8",
-        Authorization: `Bearer ${sessionStorage.getItem("accessToken")}`,
+        Authorization: `Bearer ${window.sessionStorage.getItem("accessToken")}`,
     },
 });
 export default AxiosInstance;
