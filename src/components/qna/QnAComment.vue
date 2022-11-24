@@ -12,7 +12,7 @@
             <v-list-item v-for="i in comments" :key="i.num">
                 <v-list-item-title v-text="i.comment"></v-list-item-title>
                 <v-list-item-title v-text="i.writer" class='text-right'></v-list-item-title>
-                <v-icon small v-if="i.writer===user" @click="deleteComment(i.num)">
+                <v-icon small v-if="i.writer===user || user==='admin'" @click="deleteComment(i.num)">
                     mdi-delete
                 </v-icon>
             </v-list-item>

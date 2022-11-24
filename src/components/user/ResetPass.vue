@@ -1,4 +1,5 @@
 <template>
+  <v-form class="col-12" style="min-height: 100vh" lazy-validation>
   <v-row class="d-flex justify-center align-center fill-height" style="min-height: 100vh">
     <v-col cols="12" md="6">
       <v-card class="py-6">
@@ -36,6 +37,7 @@
       </v-card>
     </v-col>
   </v-row>
+  </v-form>
 </template>
 
 <script>
@@ -48,7 +50,7 @@ export default {
             newPassCheck:"",
             pass_rule: [
                 v => !!v || '비밀번호는 필수 입력사항입니다.',
-                v => v===this.newPassCheck || '비밀번호가 일치하지 않습니다.'
+                v => v===this.newPass || '비밀번호가 일치하지 않습니다.'
             ],
         }
     },

@@ -82,7 +82,7 @@
             >
           </v-col>
 
-          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===false" cols="5">
+          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===false || userId==='admin'" cols="5">
             <v-btn
                 class="text-capitalize"
                 to="/favoritelist"

@@ -41,7 +41,7 @@ export default {
     data(){
         return{
             num:this.$store.state.detailqna.num,
-            writer:this.$store.state.userId,
+            writer:this.$store.state.detailqna.userId,
             title:this.$store.state.detailqna.title,
             content:this.$store.state.detailqna.content
         }

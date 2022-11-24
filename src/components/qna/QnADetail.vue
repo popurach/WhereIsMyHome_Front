@@ -29,10 +29,10 @@
 			</form>
 		</div>
         <div style="margin-bottom:4%;" align="center">
-            <v-btn v-if="this.$store.state.userId===this.detailqna.writer" class="mr-4" @click="update">
+            <v-btn v-if="user===this.detailqna.writer || user==='admin'" class="mr-4" @click="update">
                 수정
             </v-btn>
-            <v-btn v-if="this.$store.state.userId===this.detailqna.writer" class="mr-4" @click="remove">
+            <v-btn v-if="user===this.detailqna.writer || user==='admin'" class="mr-4" @click="remove">
                 삭제
             </v-btn>
             <v-btn @click="fnList">
@@ -53,6 +53,7 @@ export default {
     data() {
         return {
             detailqna:this.$store.state.detailqna,
+            user:this.$store.state.userId
         }
     },
     methods: {
