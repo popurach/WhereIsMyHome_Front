@@ -78,7 +78,7 @@ const store = new Vuex.Store({
         },
         loginAction: (store, payload) => {
             // accessToken, refreshToken 받기
-            http.post("http://localhost/login", payload)
+            http.post("/login", payload)
                 .then(({ data }) => {
                     if (data.message === "success") {
                         let accessToken = data["access-token"];

@@ -1605,6 +1605,11 @@
   "resolved" "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   "version" "1.0.2"
 
+"v-carousel@^1.0.2":
+  "integrity" "sha512-8mUrFP/OOyM7GwdeDjeuzaMtNItpftNC5fvE/kvNmxcJJCF++85+9gwpEPaHunDhLlZrUn2KPYDE053aD1dhEg=="
+  "resolved" "https://registry.npmjs.org/v-carousel/-/v-carousel-1.0.2.tgz"
+  "version" "1.0.2"
+
 "vite-plugin-vue2@^1.9.3":
   "integrity" "sha512-0KhHSEeht0VHJtt4Z2cJ9bWBq4dP3HoXpapqAHV+f+cUa6KywYdOd+z6sSGLpuGjN8F9YinrFIo8dfVmMOpc8Q=="
   "resolved" "https://registry.npmjs.org/vite-plugin-vue2/-/vite-plugin-vue2-1.9.3.tgz"
@@ -1643,6 +1648,14 @@
   optionalDependencies:
     "fsevents" "~2.3.2"
 
+"vue-carousel-3d@^1.0.1":
+  "integrity" "sha512-Q50gIEB6plLdqYd3jLxte8RJsXNPQBcrRsgUey7nnaQ7TvtFoRu/4rpPP1FiihahE0v+IzVv8LLSSJxD+XrQVQ=="
+  "resolved" "https://registry.npmjs.org/vue-carousel-3d/-/vue-carousel-3d-1.0.1.tgz"
+  "version" "1.0.1"
+  dependencies:
+    "core-js" "^3.6.5"
+    "vue" "^2.6.11"
+
 "vue-router@^3.2.0":
   "integrity" "sha512-FUlILrW3DGitS2h+Xaw8aRNvGTwtuaxrRkNSHWTizOfLUie7wuYwezeZ50iflRn8YPV5kxmU2LQuu3nM/b3Zsg=="
   "resolved" "https://registry.npmjs.org/vue-router/-/vue-router-3.5.3.tgz"
@@ -1661,7 +1674,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.0.0", "vue@^2.6.14", "vue@^2.6.4", "vue@2 || 3":
+"vue@^2.0.0", "vue@^2.6.11", "vue@^2.6.14", "vue@^2.6.4", "vue@2 || 3":
   "integrity" "sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.6.14.tgz"
   "version" "2.6.14"
