@@ -1,4 +1,3 @@
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 <template>
   <v-row class="d-flex justify-center align-center fill-height" style="min-height: 100vh">
     <v-col cols="12" md="6">
@@ -22,6 +21,9 @@
               @keyup.enter="login"
           ></v-text-field>
           <div class="text-right">
+            <v-btn color="accent" @click="findPass">
+              비밀번호 찾기
+            </v-btn>
             <v-btn color="accent" @click="login">
               로그인
             </v-btn>
@@ -36,7 +38,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapActions } from 'vuex';
 
 export default {
@@ -49,6 +50,9 @@ export default {
   },
   methods:{
     ...mapActions(["loginAction","getUserInfo"]),
+    findPass(){
+      this.$router.push("/findPass");
+    },
     login(){
       this.loginAction({id:this.id,pass:this.pass});
     },

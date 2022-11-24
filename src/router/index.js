@@ -40,6 +40,16 @@ const routes = [
         component: () => import("@/views/CheckPage.vue"),
     },
     {
+        path: "/findPass",
+        name: "FindPass",
+        component: () => import("@/components/user/FindPass.vue"),
+    },
+    {
+        path: "/resetPass",
+        name: "ResetPass",
+        component: () => import("@/components/user/ResetPass.vue"),
+    },
+    {
         path: "/login",
         name: "Login",
         component: () => import("@/views/Login.vue"),

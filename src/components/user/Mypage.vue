@@ -33,6 +33,9 @@
               readonly
           ></v-text-field>
           <div class="text-right">
+            <v-btn color="accent" @click="resetPass">
+              비밀번호 변경
+            </v-btn>
             <v-btn color="accent" @click="update">
               수정
             </v-btn>
@@ -62,6 +65,9 @@ export default {
   computed:{...mapGetters({userInfo:"UserInfoGetter"})},
   methods:{
     ...mapActions(["getUserInfoAction"]),
+    resetPass(){
+      this.$router.push("/resetPass");
+    },
     update(){
         this.$router.push("/update");
     },
