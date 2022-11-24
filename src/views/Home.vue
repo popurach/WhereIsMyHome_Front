@@ -21,14 +21,33 @@
           </v-card-text>
         </v-img>
       </v-card>
+      <news-card-list :newsList="newsList"></news-card-list>
   </div>
 </template>
 
 <script>
+import http from "@/api/http";
+import NewsCardList from "@/components/news/NewsCardList";
 export default {
   name: "Home",
+  data() {
+    return {
+      newsList: [],
+    }
+  },
   components: {
+    NewsCardList,
     siderbar: () => import("@/components/details/sidebar"),
+  },
+  created() {
+    http.get("land/news").then(({ data }) => {
+      data.body.forEach((news) => {
+        // console.log(news);
+        this.newsList.push(news);
+      });
+      // this.newsList = data.body;
+    });
+    console.log(this.newsList);
   },
 };
 </script>

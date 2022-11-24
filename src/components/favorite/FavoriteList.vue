@@ -96,6 +96,7 @@ export default {
 
               var aTag = document.createElement('a');
               aTag.setAttribute('href', `https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=${this.aptSearch}`);
+              aTag.setAttribute('target', "_blank");
               aTag.appendChild(document.createTextNode(`${position[2]}`));
               // aTag.innerText = `${position[2]}`;
               content.appendChild(aTag);
@@ -203,7 +204,7 @@ export default {
           width:"20%",
           align:"center"
         },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Delete', value: 'actions', sortable: false },
       ],
     }
   },
