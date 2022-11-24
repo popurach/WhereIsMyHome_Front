@@ -101,6 +101,14 @@
             </v-btn>
             <v-btn
                 class="text-capitalize"
+                exact
+                exact-active-class="accent--text"
+                text
+                disabled
+            ><span style="color:#D1A47D">{{this.$store.state.userName}}</span>님
+            </v-btn>
+            <v-btn
+                class="text-capitalize"
                 @click="logout"
                 exact
                 exact-active-class="accent--text"
@@ -108,7 +116,7 @@
             >로그아웃
             </v-btn>
           </v-col>
-          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===true" cols="3">
+          <v-col v-if="userId!='' && this.$store.state.IS_OAUTH===true" cols="4">
             <v-btn
                 class="text-capitalize"
                 to="/favoritelist"
@@ -116,6 +124,14 @@
                 exact-active-class="accent--text"
                 text
             >관심지역
+            </v-btn>
+            <v-btn
+                class="text-capitalize"
+                exact
+                exact-active-class="accent--text"
+                text
+                disabled
+            ><span style="color:#D1A47D">{{this.$store.state.userName}}</span>님
             </v-btn>
             <v-btn
                 class="text-capitalize"

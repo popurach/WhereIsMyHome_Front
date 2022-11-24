@@ -70,8 +70,8 @@ const store = new Vuex.Store({
             sessionStorage.setItem("accessToken", payload.access);
             sessionStorage.setItem("refreshToken", payload.refresh);
 
-            // TODO: google login id 보내주기
             store.commit("getUserId", { accessToken: payload.access });
+            store.dispatch("getUserInfoAction", store.state.userId);
 
             alert("로그인 성공했습니다.");
             router.push("/");
@@ -92,8 +92,9 @@ const store = new Vuex.Store({
 
                         store.commit("loginMutation", payload);
 
-                        console.log(accessToken);
+                        store.dispatch("getUserInfoAction", store.state.userId);
                         alert("로그인 성공했습니다.");
+
                         router.push("/");
                     } else {
                         store.commit("SET_IS_LOGIN", false);
